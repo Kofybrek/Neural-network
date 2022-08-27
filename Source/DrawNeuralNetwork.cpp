@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <sstream>
 #include <SFML/Graphics.hpp>
-
+#include <cmath>
 #include "Headers/Global.hpp"
 #include "Headers/DrawNeuralNetwork.hpp"
 #include "Headers/DrawText.hpp"

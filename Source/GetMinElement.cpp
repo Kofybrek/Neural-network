@@ -2,7 +2,7 @@
 #include <array>
 #include <chrono>
 #include <vector>
-
+#include <cfloat>
 #include "Headers/Global.hpp"
 #include "Headers/GetMinElement.hpp"
 

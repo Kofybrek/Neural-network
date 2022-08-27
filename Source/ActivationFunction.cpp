@@ -1,5 +1,5 @@
 #include <algorithm>
-
+#include <cmath>
 #include "Headers/ActivationFunction.hpp"
 
 float activation_function(bool i_derivative, float i_input)

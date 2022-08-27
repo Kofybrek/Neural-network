@@ -1,7 +1,7 @@
 #include <array>
 #include <chrono>
 #include <vector>
-
+#include <cmath>
 #include "Headers/ActivationFunction.hpp"
 #include "Headers/Global.hpp"
 #include "Headers/BackPropagation.hpp"
