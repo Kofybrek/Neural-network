@@ -10,20 +10,15 @@ const screenWidth = canvasX + canvasWidth;
 const screenHeight = canvasY + canvasHeight;
 
 ////////////////////////////////////////////////////////////////
-// input
-let keyR;
-let keyG;
-let keyB;
-
-////////////////////////////////////////////////////////////////
 // msg
 let isTrain = false;
 let errText;
-let sample = new Set();
+let sample = new Array();
+let totalError = 0;
 
 let buttonMsg = [
   {
-    name: "red",
+    name: "red button",
     id: 0,
     color: 0xff0000,
     output: [1, 0, 0],
@@ -32,7 +27,7 @@ let buttonMsg = [
     y: 100,
   },
   {
-    name: "green",
+    name: "green button",
     id: 1,
     color: 0x00ff00,
     output: [0, 1, 0],
@@ -41,7 +36,7 @@ let buttonMsg = [
     y: 200,
   },
   {
-    name: "blue",
+    name: "blue button",
     id: 2,
     color: 0x0000ff,
     output: [0, 0, 1],
@@ -83,10 +78,10 @@ class neuronExample extends Phaser.Scene {
   }
 
   create() {
-    keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-    keyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G);
-    keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
-
+    let showColor = this.add.text(0, canvasHeight / 2, "Current: red button", {
+      fontSize: "16px",
+      fill: "#0",
+    });
     for (let iColorButton = 0; iColorButton < colorButtonNum; iColorButton++) {
       let button = this.add
         .text(
@@ -97,7 +92,7 @@ class neuronExample extends Phaser.Scene {
         )
         .setInteractive({ useHandCursor: true })
         .on("pointerdown", () => {
-          button.setStyle({ fill: buttonMsg[iColorButton].light });
+          showColor.setText("Current: " + buttonMsg[iColorButton].name);
           curButton = buttonMsg[iColorButton].id;
         })
         .on("pointerover", () =>
@@ -115,13 +110,21 @@ class neuronExample extends Phaser.Scene {
       )
       .setInteractive({ useHandCursor: true })
       .on("pointerdown", () => {
-        startButton.setStyle({ fill: buttonMsg[startMsg].color });
-        isTrain = true;
+        if (sample.length == 0) {
+          isTrain = false;
+          startButton.setText("start: put dots!");
+        } else {
+          isTrain = true;
+          startButton.setText("start");
+        }
       })
       .on("pointerover", () =>
         startButton.setStyle({ fill: buttonMsg[startMsg].light })
       );
-    errText = this.add.text(0, 0, "", { fontSize: "16px", fill: "#00ff00" });
+    errText = this.add.text(0, 0, "Total Error: ", {
+      fontSize: "16px",
+      fill: "#00ff00",
+    });
 
     circle = new Phaser.Geom.Circle(0, 0, dotRadius);
     testCanvas = this.textures.createCanvas(
@@ -145,7 +148,6 @@ class neuronExample extends Phaser.Scene {
     this.input.on("pointerdown", (pointer) => pionterDown.call(this, pointer));
   }
   update() {
-    // gameInput();
     gameDeal();
     gameOutput();
   }
@@ -170,10 +172,9 @@ function normalizePointerXY(poniterX, poniterY) {
 
 function gameDeal() {
   if (isTrain) {
-    let sampleArray = Array.from(sample);
     brain.train(
-      sampleArray.map((value) => normalizePointerXY(...value.input)),
-      sampleArray.map((value) => value.output),
+      sample.map((value) => normalizePointerXY(...value.input)),
+      sample.map((value) => value.output),
       trainNumPerFrame
     );
   }
@@ -181,6 +182,7 @@ function gameDeal() {
 
 function gameOutput() {
   drawImg();
+  showError();
 }
 
 function drawImg() {
@@ -190,7 +192,7 @@ function drawImg() {
   for (let i = 0; i < width; i++) {
     for (let j = 0; j < height; j++) {
       let index = (i + j * width) * 4;
-      let [r, g, b] = brain.predit([i / width, j / height]);
+      let [r, g, b] = brain.predict([i / width, j / height]);
       pixels.data[index] = Math.round(255 * r);
       pixels.data[index + 1] = Math.round(255 * g);
       pixels.data[index + 2] = Math.round(255 * b);
@@ -219,10 +221,21 @@ function pionterDown(pointer) {
       this.add
         .circle(x, y, dotRadius, buttonMsg[curButton].color)
         .setStrokeStyle(1, 0x0);
-      sample.add({
+      sample.push({
         input: [x, y],
         output: buttonMsg[curButton].output,
       });
     }
   }
+}
+
+function showError() {
+  totalError = 0;
+  for (let sam of sample) {
+    let pre = brain.predict(normalizePointerXY(...sam.input));
+    for (let i = 0; i < pre.length; i++) {
+      totalError += Math.abs(pre[i] - sam.output[i]);
+    }
+  }
+  errText.setText("Total Error: " + totalError);
 }

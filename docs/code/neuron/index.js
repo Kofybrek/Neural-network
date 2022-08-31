@@ -37,7 +37,7 @@ export default class NeuralNetwork {
     }
   }
 
-  predit(input) {
+  predict(input) {
     return this.forwardPropagation(input);
   }
 }
