@@ -11,3 +11,11 @@
 
   - `make`
   - `make run`
+
+## 源码
+
+- `FRAME_DURATION` 和 `lag`是控制帧率的参数
+
+  - `FRAME_DURATION`: 每帧的时间间隔, 单位是毫秒
+
+    60 帧

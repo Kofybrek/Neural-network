@@ -78,6 +78,15 @@
             },
           },
         },
+        plugins: [
+          function (hook, vm) {
+            hook.beforeEach(function (html) {
+              return html.replace(/<a\s*href=['|"]#(.*?)['|"].*?>/gi, (m, g1) =>
+                m.replace(g1, vm.route.path + "#" + g1)
+              );
+            });
+          },
+        ],
       };
     </script>
     <!-- Docsify v4 -->
