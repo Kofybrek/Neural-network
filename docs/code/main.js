@@ -2,7 +2,7 @@ import Phaser from "./lib/phaser.js";
 import Neuron from "./neuron/index.js";
 ////////////////////////////////////////////////////////////////
 // Global
-const canvasX = 0;
+const canvasX = 512;
 const canvasY = 0;
 const canvasWidth = 512;
 const canvasHeight = 512;
@@ -21,6 +21,47 @@ let isTrain = false;
 let errText;
 let sample = new Set();
 
+let buttonMsg = [
+  {
+    name: "red",
+    id: 0,
+    color: 0xff0000,
+    output: [1, 0, 0],
+    light: "#880000",
+    x: canvasX / 2,
+    y: 100,
+  },
+  {
+    name: "green",
+    id: 1,
+    color: 0x00ff00,
+    output: [0, 1, 0],
+    light: "#008800",
+    x: canvasX / 2,
+    y: 200,
+  },
+  {
+    name: "blue",
+    id: 2,
+    color: 0x0000ff,
+    output: [0, 0, 1],
+    light: "#000088",
+    x: canvasX / 2,
+    y: 300,
+  },
+  {
+    name: "start",
+    color: "#ff00ff",
+    output: [0, 0, 1],
+    light: "#880088",
+    x: canvasX / 2,
+    y: 400,
+  },
+];
+
+let curButton = 0;
+const colorButtonNum = 3;
+const startMsg = 3;
 ////////////////////////////////////////////////////////////////
 // draw
 let graphics;
@@ -45,9 +86,41 @@ class neuronExample extends Phaser.Scene {
     keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
     keyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G);
     keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
-    this.input.keyboard
-      .addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
-      .on("down", () => (isTrain = true));
+
+    for (let iColorButton = 0; iColorButton < colorButtonNum; iColorButton++) {
+      let button = this.add
+        .text(
+          buttonMsg[iColorButton].x,
+          buttonMsg[iColorButton].y,
+          buttonMsg[iColorButton].name,
+          { fontSize: "16px", fill: "#0" }
+        )
+        .setInteractive({ useHandCursor: true })
+        .on("pointerdown", () => {
+          button.setStyle({ fill: buttonMsg[iColorButton].light });
+          curButton = buttonMsg[iColorButton].id;
+        })
+        .on("pointerover", () =>
+          button.setStyle({ fill: buttonMsg[iColorButton].light })
+        )
+        .on("pointerout", () => button.setStyle({ fill: "#0" }));
+    }
+
+    let startButton = this.add
+      .text(
+        buttonMsg[startMsg].x,
+        buttonMsg[startMsg].y,
+        buttonMsg[startMsg].name,
+        { fontSize: "16px", fill: "#0" }
+      )
+      .setInteractive({ useHandCursor: true })
+      .on("pointerdown", () => {
+        startButton.setStyle({ fill: buttonMsg[startMsg].color });
+        isTrain = true;
+      })
+      .on("pointerover", () =>
+        startButton.setStyle({ fill: buttonMsg[startMsg].light })
+      );
     errText = this.add.text(0, 0, "", { fontSize: "16px", fill: "#00ff00" });
 
     circle = new Phaser.Geom.Circle(0, 0, dotRadius);
@@ -69,7 +142,7 @@ class neuronExample extends Phaser.Scene {
 
     graphics = this.add.graphics();
     graphics.lineStyle(1, 0x0, 1);
-    this.input.on("pointerdown", (pointer) => Click.call(this, pointer));
+    this.input.on("pointerdown", (pointer) => pionterDown.call(this, pointer));
   }
   update() {
     // gameInput();
@@ -82,6 +155,7 @@ let config = {
   width: screenWidth,
   height: screenHeight,
   type: Phaser.AUTO,
+  backgroundColor: "#ffffff",
   scene: neuronExample,
 };
 
@@ -109,24 +183,6 @@ function gameOutput() {
   drawImg();
 }
 
-function drawDots() {
-  function drawCircle(x, y, CircleColor) {
-    graphics.fillStyle(CircleColor, 1);
-    circle.setTo(x, y, dotRadius);
-    graphics.fillCircleShape(circle);
-    graphics.strokeCircleShape(circle);
-  }
-  for (let cir of sample) {
-    let [x, y] = cir.input;
-    let color = Phaser.Display.Color.GetColor(
-      255 * cir.output[0],
-      255 * cir.output[1],
-      255 * cir.output[2]
-    );
-    drawCircle(x, y, color);
-  }
-}
-
 function drawImg() {
   const width = testCanvas.width;
   const height = testCanvas.height;
@@ -145,7 +201,7 @@ function drawImg() {
   testCanvas.refresh();
 }
 
-function Click(pointer) {
+function pionterDown(pointer) {
   let mousePointer = pointer;
   if (mousePointer.isDown) {
     function isBelongToCanvas() {
@@ -159,26 +215,14 @@ function Click(pointer) {
     if (isBelongToCanvas()) {
       const x = mousePointer.x;
       const y = mousePointer.y;
-      if (keyR.isDown) {
-        this.add.circle(x, y, dotRadius, 0xff0000).setStrokeStyle(1, 0x0);
-        this.add;
-        sample.add({
-          input: [x, y],
-          output: [1, 0, 0],
-        });
-      } else if (keyG.isDown) {
-        this.add.circle(x, y, dotRadius, 0x00ff00).setStrokeStyle(1, 0x0);
-        sample.add({
-          input: [x, y],
-          output: [0, 1, 0],
-        });
-      } else if (keyB.isDown) {
-        this.add.circle(x, y, dotRadius, 0x0000ff).setStrokeStyle(1, 0x0);
-        sample.add({
-          input: [x, y],
-          output: [0, 0, 1],
-        });
-      }
+
+      this.add
+        .circle(x, y, dotRadius, buttonMsg[curButton].color)
+        .setStrokeStyle(1, 0x0);
+      sample.add({
+        input: [x, y],
+        output: buttonMsg[curButton].output,
+      });
     }
   }
 }

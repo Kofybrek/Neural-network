@@ -206,6 +206,10 @@ flowchart TD
     state -- "预测模式" --> predit --> e
 ```
 
+[](index.js ":include :type=code js")
+
+> 训练采取随机选择样本的方式
+
 ### 初始化
 
 #### network
