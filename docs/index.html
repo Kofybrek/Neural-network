@@ -45,6 +45,12 @@
       href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css"
     />
     <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <!-- mermaid-latex -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js"
+      integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div id="app"></div>
@@ -68,9 +74,13 @@
           renderer: {
             code: function (code, lang) {
               if (lang === "mermaid") {
+                let transLatex = code.replace(
+                  /c194a9ef(.*?)c194a9ef/g,
+                  (m, g1) => katex.renderToString(g1).replace(/"/g, `'`)
+                );
                 return (
                   '<div class="mermaid">' +
-                  mermaid.render("mermaid-svg-" + num++, code) +
+                  mermaid.render("mermaid-svg-" + num++, transLatex) +
                   "</div>"
                 );
               }
@@ -81,8 +91,9 @@
         plugins: [
           function (hook, vm) {
             hook.beforeEach(function (html) {
-              return html.replace(/<a\s*href=['|"]#(.*?)['|"].*?>/gi, (m, g1) =>
-                m.replace(g1, vm.route.path + "#" + g1)
+              return html.replace(
+                /<a\s+href\s*=\s*['|"]#(.*?)['|"].*?>/gi,
+                (m, g1) => m.replace(g1, vm.route.path + "#" + g1)
               );
             });
           },
