@@ -12,7 +12,7 @@
   - `make`
   - `make run`
 
-## 源码
+## C++源码
 
 - `FRAME_DURATION` 和 `lag`是控制帧率的参数
 
@@ -23,3 +23,17 @@
 ## 展示
 
 [](code/code.html ":include :type=iframe height=600px")
+
+> start: 开始运行
+>
+> red : 设置为红色
+>
+> green : 设置为绿色
+>
+> blue : 设置为蓝色
+>
+> `>` : 提示当前颜色
+
+### 效果
+
+![](assets/2022-09-02-07-34-41.png)
