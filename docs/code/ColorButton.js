@@ -1,5 +1,3 @@
-import { canvasX, canvasHeight } from "./global.js";
-
 const buttons = [
   {
     name: "red",

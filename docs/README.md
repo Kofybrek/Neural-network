@@ -19,3 +19,7 @@
   - `FRAME_DURATION`: 每帧的时间间隔, 单位是毫秒
 
     60 帧
+
+## 展示
+
+[](code/code.html ":include :type=iframe height=600px")
