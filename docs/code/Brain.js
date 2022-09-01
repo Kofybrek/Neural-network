@@ -24,7 +24,7 @@ let neuron = new Neuron(
 export default class Brain {
   #errText;
   constructor(scene) {
-    this.#errText = scene.add.text(0, 0, "Total Error: 0", {
+    this.#errText = scene.add.text(0, 0, "Error: 0", {
       fontSize: "16px",
       fill: "#00ff00",
     });
@@ -50,7 +50,7 @@ export default class Brain {
         totalError += Math.abs(pre[i] - sam.output[i]);
       }
     }
-    this.#errText.setText("Total Error: " + totalError);
+    this.#errText.setText("Error: " + totalError.toFixed(2));
   }
 }
 

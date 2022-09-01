@@ -27,7 +27,7 @@ class neuronExample extends Phaser.Scene {
     pointer = new Pointer(this);
   }
   update() {
-    brain.update(startButton.clicked);
+    brain.update(startButton.started);
     canvas.update(brain);
   }
 }

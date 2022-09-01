@@ -1,6 +1,6 @@
 ////////////////////////////////
 // canvas
-export const canvasX = 512;
+export const canvasX = 120;
 export const canvasY = 0;
 export const canvasWidth = 512;
 export const canvasHeight = 512;
