@@ -10,10 +10,6 @@
 
 - wiki: [Artificial neural network](https://en.wikipedia.org/wiki/Artificial_neural_network)
 
-- [一文弄懂神经网络中的反向传播法——BackPropagation](https://www.cnblogs.com/charlotte77/p/5629865.html)
-
-  误差反向传播, 本质上是泰勒的链式传导
-
 ## 结构
 
 - 神经细胞(neuron: N)
@@ -323,6 +319,10 @@ $$
 [](ErrorFunction.js ":include :type=code js")
 
 ### 反向传播
+
+- [一文弄懂神经网络中的反向传播法——BackPropagation](https://www.cnblogs.com/charlotte77/p/5629865.html)
+
+  误差反向传播, 本质上是泰勒的链式传导
 
 ```mermaid
 flowchart LR
