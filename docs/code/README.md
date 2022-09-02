@@ -8,7 +8,7 @@
 
 ## 展示
 
-[](code.html ":include :type=iframe height=600px")
+[](code.html ":include :type=iframe width = 650px height=540px")
 
 ## 代码主逻辑
 

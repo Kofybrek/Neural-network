@@ -22,7 +22,7 @@
 
 ## 展示
 
-[](code/code.html ":include :type=iframe height=600px")
+[](code/code.html ":include :type=iframe width = 650px height=540px")
 
 > start: 开始运行
 >

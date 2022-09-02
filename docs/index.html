@@ -9,30 +9,22 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
     />
+    <!-- Theme: Simple (light + dark) -->
     <link
       rel="stylesheet"
-      href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
+      media="(prefers-color-scheme: light)"
+      href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css"
     />
+    <link
+      rel="stylesheet"
+      media="(prefers-color-scheme: dark)"
+      href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
+    />
+    <!-- End -->
     <!-- latex -->
     <link
       rel="stylesheet"
       href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
-    />
-    <!-- dark mode -->
-    <link
-      rel="stylesheet"
-      href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css"
-      title="docsify-darklight-theme"
-      type="text/css"
-    />
-    <!-- mind map -->
-    <!-- markmap is based on d3 -->
-    <script src="//unpkg.com/d3@3/d3.min.js"></script>
-    <script src="//unpkg.com/markmap@latest/lib/d3-flextree.js"></script>
-    <script src="//unpkg.com/markmap@latest/lib/view.mindmap.js"></script>
-    <link
-      rel="stylesheet"
-      href="//unpkg.com/markmap@latest/style/view.mindmap.css"
     />
     <!-- slidebar collapse -->
     <link
@@ -45,6 +37,7 @@
       href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css"
     />
     <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <!-- End -->
     <!-- mermaid-latex -->
     <script
       src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js"
@@ -64,12 +57,6 @@
         loadSidebar: true,
         subMaxLevel: 3, // 子目录最大层级, 有助于显示 markdown 的层级
         auto2top: true, // 自动跳转至顶部
-        mindmap: {
-          markmap: {
-            preset: "colorful", // or default
-            linkShape: "diagonal", // or bracket
-          },
-        },
         markdown: {
           renderer: {
             code: function (code, lang) {
@@ -104,13 +91,15 @@
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
     <!-- docsify-katex for latex -->
     <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
-    <!-- dark mode -->
-    <script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"></script>
     <!-- copy to clipboard -->
     <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-    <!-- markmap for mind map -->
-    <script src="//unpkg.com/docsify-mindmap/dist/docsify-mindmap.min.js"></script>
     <!-- slidebar collapse -->
     <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+    <!-- docsify-themeable -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/js/docsify-themeable.min.js"></script>
+    <!-- search -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.js"></script>
+    <!-- zoom image -->
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
   </body>
 </html>
