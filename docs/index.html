@@ -16,11 +16,6 @@
       title="dark"
     />
     <!-- End -->
-    <!-- latex -->
-    <link
-      rel="stylesheet"
-      href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"
-    />
     <!-- slidebar collapse -->
     <link
       rel="stylesheet"
@@ -34,12 +29,19 @@
     <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <!-- End -->
     <!-- mermaid-latex -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+      integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
+      crossorigin="anonymous"
+    />
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
       integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@2/marked.min.js"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -57,9 +59,8 @@
           renderer: {
             code: function (code, lang) {
               if (lang === "mermaid") {
-                let transLatex = code.replace(
-                  /c194a9ef(.*?)c194a9ef/g,
-                  (m, g1) => katex.renderToString(g1).replace(/"/g, `'`)
+                let transLatex = code.replace(/\$(.*?)\$/g, (m, g1) =>
+                  katex.renderToString(g1).replace(/"/g, `'`)
                 );
                 return (
                   '<div class="mermaid" style="background:#E1EFD9" >' +
@@ -83,10 +84,105 @@
         ],
       };
     </script>
+    <script>
+      // import katex from "katex";
+      // import marked from "marked";
+
+      (function () {
+        let oldMarkdown = window.$docsify.markdown;
+        let newMarked = marked;
+        let newM = JSON.stringify(newMarked);
+        function newMarkdown(originMarked, originRenderer) {
+          // let newMarked = marked; // in docsify.js: window.$marked = marked
+          function isFn(obj) {
+            return typeof obj === "function";
+          }
+          const mathExtension = {
+            name: "math",
+            level: "inline",
+            start(src) {
+              let index = src.match(/\$/)?.index;
+              return index;
+            },
+            tokenizer(src, tokens) {
+              const blockRule = /^\$\$((\\.|[^\$\\])+)\$\$/;
+              const inlineRule = /^\$((\\.|[^\$\\])+)\$/;
+              let match;
+              if ((match = blockRule.exec(src))) {
+                return {
+                  type: "math",
+                  raw: match[0],
+                  text: match[1].trim(),
+                  mathLevel: "block",
+                };
+              } else if ((match = inlineRule.exec(src))) {
+                return {
+                  type: "math",
+                  raw: match[0],
+                  text: match[1].trim(),
+                  mathLevel: "inline",
+                };
+              }
+            },
+            renderer(token) {
+              if (token.mathLevel === "block") {
+                return (
+                  '<div class="math">' +
+                  katex.renderToString(token.text, {
+                    throwOnError: false,
+                    displayMode: true,
+                  }) +
+                  "</div>"
+                );
+              } else if (token.mathLevel === "inline") {
+                return (
+                  '<span class="math">' +
+                  katex.renderToString(token.text, {
+                    throwOnError: false,
+                    displayMode: false,
+                  }) +
+                  "</span>"
+                );
+              }
+            },
+          };
+          const merge =
+            Object.assign ||
+            function (to) {
+              for (let i = 1; i < arguments.length; i++) {
+                const from = Object(arguments[i]);
+                for (const key in from) {
+                  if (hasOwn.call(from, key)) {
+                    to[key] = from[key];
+                  }
+                }
+              }
+              return to;
+            };
+
+          let opts = oldMarkdown || {};
+
+          if (isFn(oldMarkdown)) {
+            opts = originMarkdonw.apply(
+              this, // this original
+              originMarked,
+              originRenderer
+            ).defaults;
+          } else {
+            opts = merge(oldMarkdown, {
+              renderer: merge(originRenderer, oldMarkdown.renderer),
+            });
+          }
+          newMarked.setOptions(opts);
+          newMarked.use({ extensions: [mathExtension] });
+
+          return newMarked;
+        }
+        window.$docsify.markdown = newMarkdown;
+      })();
+    </script>
     <!-- Docsify v4 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-    <!-- docsify-katex for latex -->
-    <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
     <!-- copy to clipboard -->
     <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
     <!-- slidebar collapse -->
