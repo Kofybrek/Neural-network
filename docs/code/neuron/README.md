@@ -14,40 +14,60 @@
 
 - 神经细胞(neuron: N)
 
-  ```mermaid
-  flowchart LR
-      subgraph Cell [神经细胞]
-        direction LR
+<!-- tabs:start -->
 
-        input[/"输入: $\Sigma \omega_i x_i$"/]
-        activate["激活函数: $f$"]
-        output[\"输出: $y$"\]
+#### **svg**
 
-        input --> activate --> output
-      end
+```mermaid
+flowchart LR
+    subgraph Cell [神经细胞]
+      direction LR
 
-      connect(("连接节点: $x_i$"))
+      input[/"输入: $\Sigma \omega_i x_i$"/]
+      activate["激活函数: $f$"]
+      output[\"输出: $y$"\]
 
-      connect -- "权重: $\omega_i$" --> input
-  ```
+      input --> activate --> output
+    end
+
+    connect(("连接节点: $x_i$"))
+
+    connect -- "权重: $\omega_i$" --> input
+```
+
+#### **image**
+
+![](assets/2022-09-07-12-19-41.png)
+
+<!-- tabs:end -->
 
 - 输入层细胞(input: In)
 
-  ```mermaid
-  flowchart LR
-      subgraph Cell [输入层细胞]
-        direction LR
+<!-- tabs:start -->
 
-        input[/"$x$"/]
-        output[\"$x$"\]
+#### **svg**
 
-        input  --> output
-      end
+```mermaid
+flowchart LR
+    subgraph Cell [输入层细胞]
+      direction LR
 
-      connect(("$x$"))
+      input[/"$x$"/]
+      output[\"$x$"\]
 
-      connect  --> input
-  ```
+      input  --> output
+    end
+
+    connect(("$x$"))
+
+    connect  --> input
+```
+
+#### **image**
+
+![](assets/2022-09-07-12-06-54.png)
+
+<!-- tabs:end -->
 
 - 偏置细胞(bias: B)
 
@@ -253,6 +273,10 @@ flowchart TD
 
 ### 向前传播
 
+<!-- tabs:start -->
+
+#### **svg**
+
 ```mermaid
 flowchart LR
     subgraph previousLayer ["$i-1$层"]
@@ -280,6 +304,12 @@ flowchart LR
     P3 -- "$\omega_3$"--> input
 ```
 
+#### **image**
+
+![](assets/2022-09-07-12-26-27.png)
+
+<!-- tabs:end -->
+
 $$
 \begin{aligned}
 in_i &= \Sigma_j (\omega_{(i-1, j)} \cdot out_{(i-1, j)}) + b\\
@@ -302,7 +332,17 @@ f(x) = \begin{cases}
 \end{cases}
 $$
 
+<!-- tabs:start -->
+
+#### **svg**
+
 <iframe src="https://www.desmos.com/calculator/dzudwuc28e?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+
+#### **image**
+
+![](assets/desmos-graph.png)
+
+<!-- tabs:end -->
 
 $$
 f^{\prime}(x) = \ln 2 \times 2^{-|x|-1}
@@ -323,6 +363,10 @@ $$
 - [一文弄懂神经网络中的反向传播法——BackPropagation](https://www.cnblogs.com/charlotte77/p/5629865.html)
 
   误差反向传播, 本质上是泰勒的链式传导
+
+<!-- tabs:start -->
+
+#### **svg**
 
 ```mermaid
 flowchart LR
@@ -382,6 +426,12 @@ flowchart LR
     output -- "$\omega_{(i, 2)}$" --> input2
     output -- "$\omega_{(i, 3)}$" --> input3
 ```
+
+#### **image**
+
+![](assets/2022-09-07-12-29-02.png)
+
+<!-- tabs:end -->
 
 - Weight
 
