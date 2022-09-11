@@ -14,60 +14,60 @@
 
 - 神经细胞(neuron: N)
 
-<!-- tabs:start -->
+  <!-- tabs:start -->
 
-#### **svg**
+  #### **svg**
 
-```mermaid
-flowchart LR
-    subgraph Cell [神经细胞]
-      direction LR
+  ```mermaid
+  flowchart LR
+      subgraph Cell [神经细胞]
+        direction LR
 
-      input[/"输入: $\Sigma \omega_i x_i$"/]
-      activate["激活函数: $f$"]
-      output[\"输出: $y$"\]
+        input[/"输入: $\Sigma \omega_i x_i$"/]
+        activate["激活函数: $f$"]
+        output[\"输出: $y$"\]
 
-      input --> activate --> output
-    end
+        input --> activate --> output
+      end
 
-    connect(("连接节点: $x_i$"))
+      connect(("连接节点: $x_i$"))
 
-    connect -- "权重: $\omega_i$" --> input
-```
+      connect -- "权重: $\omega_i$" --> input
+  ```
 
-#### **image**
+  #### **image**
 
-![](assets/2022-09-07-12-19-41.png)
+  ![](assets/2022-09-07-12-19-41.png)
 
-<!-- tabs:end -->
+  <!-- tabs:end -->
 
 - 输入层细胞(input: In)
 
-<!-- tabs:start -->
+  <!-- tabs:start -->
 
-#### **svg**
+  #### **svg**
 
-```mermaid
-flowchart LR
-    subgraph Cell [输入层细胞]
-      direction LR
+  ```mermaid
+  flowchart LR
+      subgraph Cell [输入层细胞]
+        direction LR
 
-      input[/"$x$"/]
-      output[\"$x$"\]
+        input[/"$x$"/]
+        output[\"$x$"\]
 
-      input  --> output
-    end
+        input  --> output
+      end
 
-    connect(("$x$"))
+      connect(("$x$"))
 
-    connect  --> input
-```
+      connect  --> input
+  ```
 
-#### **image**
+  #### **image**
 
-![](assets/2022-09-07-12-06-54.png)
+  ![](assets/2022-09-07-12-06-54.png)
 
-<!-- tabs:end -->
+  <!-- tabs:end -->
 
 - 偏置细胞(bias: B)
 
